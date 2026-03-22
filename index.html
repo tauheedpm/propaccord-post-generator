@@ -209,72 +209,95 @@ aside {
 
 /* ── X (16:9) overrides ── */
 .post.x-format {
-  width: 700px;
-  height: 394px;
-  padding: 22px 30px 20px;
-  justify-content: space-between;
+  width: 740px;
+  height: 416px;
+  padding: 28px 32px 28px;
+  justify-content: flex-start;
+  flex-direction: row;
+  gap: 24px;
 }
 
-.post.x-format .post-brand { margin-bottom: 5px; gap: 5px; }
-.post.x-format .post-brand img { width: 13px; height: 13px; }
+/* left column: brand + headline + issue card */
+.post.x-format .x-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 320px;
+  flex-shrink: 0;
+}
+
+/* right column: thread */
+.post.x-format .x-right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-left: 1.5px solid rgba(27,43,75,0.12);
+  padding-left: 24px;
+  overflow: hidden;
+}
+
+.post.x-format .post-brand { margin-bottom: 0; gap: 5px; }
+.post.x-format .post-brand img { width: 14px; height: 14px; }
 .post.x-format .post-brand-name { font-size: 11px; font-weight: 600; }
 
 .post.x-format .post-headline {
-  font-size: 30px;
+  font-size: 42px;
   font-weight: 800;
-  letter-spacing: -1px;
-  margin-bottom: 2px;
+  letter-spacing: -1.5px;
+  line-height: 1.0;
+  margin-bottom: 6px;
+  margin-top: 10px;
+  word-break: break-word;
 }
 
 .post.x-format .post-subline {
-  font-size: 11px;
+  font-size: 12px;
   margin-bottom: 0;
 }
 
 .post.x-format .post-thread {
   flex: none;
-  overflow: visible;
+  overflow: hidden;
   min-height: 0;
-  margin-top: 10px;
-}
-
-.post.x-format .thread-date {
-  font-size: 9px;
-  padding: 2px 9px;
-  margin-top: 5px;
-  margin-bottom: 4px;
+  margin-top: 0;
+  align-items: stretch;
+  width: 100%;
 }
 
 .post.x-format .bubble {
-  font-size: 11.5px;
-  font-weight: 500;
-  padding: 6px 12px 8px;
-  border-radius: 11px;
+  font-size: 11px;
+  font-weight: 400;
+  padding: 7px 11px 8px;
+  border-radius: 10px;
   line-height: 1.4;
-  max-width: 80%;
+  max-width: 100%;
+  word-break: break-word;
 }
-.post.x-format .bubble-sender { font-size: 8.5px; margin-bottom: 2px; }
-
-.post.x-format .bubble-row { margin-bottom: 2px; }
+.post.x-format .bubble-sender { font-size: 7.5px; padding: 1px 6px; }
+.post.x-format .bubble-date { font-size: 8px; }
+.post.x-format .bubble-sender-row { margin-bottom: 3px; gap: 4px; }
+.post.x-format .bubble-row { margin-bottom: 8px; width: 100%; }
+.post.x-format .bubble-row.right { justify-content: flex-end; }
 
 .post.x-format .post-issue {
   margin-top: 0;
-  padding: 10px 13px;
+  padding: 10px 12px;
   flex-shrink: 0;
 }
 
 .post.x-format .post-issue-top { margin-bottom: 3px; }
-.post.x-format .post-issue-flat { font-size: 10px; }
-.post.x-format .post-issue-status { font-size: 10px; padding: 2px 8px; }
+.post.x-format .post-issue-flat { font-size: 9.5px; }
+.post.x-format .post-issue-status { font-size: 9.5px; padding: 2px 8px; }
 
 .post.x-format .post-issue-text {
-  font-size: 16px;
+  font-size: 15px;
   font-weight: 800;
   margin-bottom: 4px;
 }
 
-.post.x-format .post-notified { font-size: 10px; }
-.post.x-format .post-url { font-size: 10px; }
+.post.x-format .post-notified { font-size: 9.5px; }
+.post.x-format .post-url { font-size: 9.5px; }
 .post.x-format .notified-dot { width: 6px; height: 6px; }
 
 .post-brand {
@@ -533,13 +556,56 @@ let currentPlatform = 'instagram';
 function setPlatform(p) {
   currentPlatform = p;
   const post = document.getElementById('post');
+
   if (p === 'x') {
     post.classList.add('x-format');
+    // build two-column layout if not already done
+    if (!post.querySelector('.x-left')) {
+      const brand    = post.querySelector('.post-brand');
+      const headline = post.querySelector('.post-headline');
+      const subline  = post.querySelector('.post-subline');
+      const thread   = post.querySelector('.post-thread');
+      const issue    = post.querySelector('.post-issue');
+
+      const left = document.createElement('div');
+      left.className = 'x-left';
+      left.appendChild(brand);
+      left.appendChild(headline);
+      left.appendChild(subline);
+      left.appendChild(issue);
+
+      const right = document.createElement('div');
+      right.className = 'x-right';
+      right.appendChild(thread);
+
+      post.innerHTML = '';
+      post.appendChild(left);
+      post.appendChild(right);
+    }
   } else {
     post.classList.remove('x-format');
+    // restore flat layout if columns exist
+    if (post.querySelector('.x-left')) {
+      const left   = post.querySelector('.x-left');
+      const right  = post.querySelector('.x-right');
+      const brand    = left.querySelector('.post-brand');
+      const headline = left.querySelector('.post-headline');
+      const subline  = left.querySelector('.post-subline');
+      const issue    = left.querySelector('.post-issue');
+      const thread   = right.querySelector('.post-thread');
+
+      post.innerHTML = '';
+      post.appendChild(brand);
+      post.appendChild(headline);
+      post.appendChild(subline);
+      post.appendChild(thread);
+      post.appendChild(issue);
+    }
   }
+
   document.getElementById('btn-instagram').classList.toggle('active', p === 'instagram');
   document.getElementById('btn-x').classList.toggle('active', p === 'x');
+  renderPost();
 }
 
 const PRESETS = [
