@@ -181,7 +181,8 @@ aside {
 /* ── THE POST ── */
 .post {
   width: 500px;
-  height: 590px;
+  height: auto;
+  min-height: 480px;
   background: #EEF2F7;
   border-radius: 20px;
   padding: 32px 36px 28px;
@@ -247,11 +248,12 @@ aside {
 .post.x-format .bubble {
   font-size: 11.5px;
   font-weight: 500;
-  padding: 7px 12px;
+  padding: 6px 12px 8px;
   border-radius: 11px;
   line-height: 1.4;
   max-width: 80%;
 }
+.post.x-format .bubble-sender { font-size: 8.5px; margin-bottom: 2px; }
 
 .post.x-format .bubble-row { margin-bottom: 2px; }
 
@@ -296,33 +298,52 @@ aside {
 /* thread */
 .post-thread {
   display: flex; flex-direction: column; gap: 0;
-  flex: 1; overflow: hidden;
-  align-items: stretch;
+  flex: none;
+  align-items: center;
 }
-
-.post-thread { align-items: center; }
 .thread-date {
   font-size: 10px; color: #fff;
-  font-weight: 700; margin: 6px 0 4px;
+  font-weight: 700; margin: 6px 0 3px;
   font-family: 'DM Mono', monospace;
   background: rgba(27,43,75,0.45);
   padding: 2px 10px;
   border-radius: 20px;
   letter-spacing: 0.5px;
   align-self: center;
-  margin-top: 10px;
+  margin-top: 8px;
 }
 
-.bubble-row { display: flex; margin-bottom: 4px; width: 100%; }
+.bubble-row { display: flex; margin-bottom: 10px; width: 100%; }
 .bubble-row.left  { justify-content: flex-start; }
 .bubble-row.right { justify-content: flex-end; }
 
 .bubble {
-  max-width: 78%; padding: 10px 14px;
+  max-width: 78%; padding: 7px 12px 9px;
   border-radius: 16px;
-  font-size: 13.5px; font-weight: 400; line-height: 1.45;
+  font-size: 12.5px; font-weight: 400; line-height: 1.4;
   color: #0F1C30; box-shadow: 0 1px 3px rgba(0,0,0,0.08);
 }
+.bubble-sender-row {
+  display: flex; align-items: center; gap: 6px; margin-bottom: 5px;
+}
+.bubble-sender {
+  display: inline-block;
+  font-size: 9px; font-weight: 800;
+  letter-spacing: 0.6px; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 20px;
+  line-height: 1.4; flex-shrink: 0;
+}
+.bubble-date {
+  font-size: 9px; font-weight: 500;
+  color: #4A5568; font-family: 'DM Mono', monospace;
+  white-space: nowrap;
+}
+.bubble-row.left  .bubble .bubble-sender { background: #1B2B4B; color: #fff; }
+.bubble-row.right .bubble .bubble-sender { background: #0e8a42; color: #fff; }
+.post.x-format .bubble-sender { font-size: 7.5px; padding: 1px 6px; }
+.post.x-format .bubble-date  { font-size: 7.5px; }
+.post.x-format .bubble-sender-row { margin-bottom: 3px; gap: 4px; }
+
 .bubble-row.left  .bubble { background: #fff; border-bottom-left-radius: 4px; }
 .bubble-row.right .bubble { background: #DCF8C6; border-bottom-right-radius: 4px; }
 
@@ -332,7 +353,7 @@ aside {
   padding: 13px 15px;
   box-shadow: var(--shadow-sm);
   border-left: 4px solid #E84D4D;
-  margin-top: 16px; flex-shrink: 0;
+  margin-top: 10px; flex-shrink: 0;
   transition: border-color 0.3s;
 }
 
@@ -400,7 +421,7 @@ aside {
   <span class="hdr-sub">Post Generator</span>
   <nav>
     <button class="preset-btn active" onclick="loadPreset(0)">Buried Message</button>
-    <button class="preset-btn" onclick="loadPreset(1)">No Payment Record</button>
+    <button class="preset-btn" onclick="loadPreset(1)">Rent Not Paid</button>
     <button class="preset-btn" onclick="loadPreset(2)">No Accountability</button>
     <button class="preset-btn" onclick="loadPreset(3)">Repeat Issue</button>
     <button class="preset-btn" onclick="loadPreset(4)">Exit Dispute</button>
@@ -528,28 +549,28 @@ const PRESETS = [
     flat: 'Flat 402', issue: 'Geyser not working', status: '11 days open',
     accent: ['#E84D4D','#FEE2E2','#B91C1C'],
     messages: [
-      { text: 'Bhai geyser 3 din se band hai. Thanda paani aa raha hai. Please fix karo ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
-      { text: 'Haan dekh lenge, plumber ko bol diya.', date: 'Day 2 — Feb 28', side: 'right' },
-      { text: 'Abhi tak koi nahi aaya. 11 din ho gaye. Log chai bhi nahi bana pa rahe.', date: 'Day 11 — Mar 9', side: 'left' }
+      { sender: 'Tenant — Rahul', text: 'Bhai geyser 3 din se band hai. Thanda paani aa raha hai. Please fix karo ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
+      { sender: 'Landlord', text: 'Haan dekh lenge, plumber ko bol diya.', date: 'Day 2 — Feb 28', side: 'right' },
+      { sender: 'Tenant — Rahul', text: 'Abhi tak koi nahi aaya. 11 din ho gaye. Log chai bhi nahi bana pa rahe.', date: 'Day 11 — Mar 9', side: 'left' }
     ],
     messagesX: [
-      { text: 'Bhai geyser 3 din se band hai. Please fix karo ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
-      { text: 'Abhi tak koi nahi aaya. 11 din ho gaye.', date: 'Day 11 — Mar 9', side: 'left' }
+      { sender: 'Tenant — Rahul', text: 'Bhai geyser 3 din se band hai. Please fix karo ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
+      { sender: 'Tenant — Rahul', text: 'Abhi tak koi nahi aaya. 11 din ho gaye.', date: 'Day 11 — Mar 9', side: 'left' }
     ]
   },
   {
-    headline: 'No paper trail.',
-    subline: 'Rent paid. But is it recorded?',
-    flat: 'Flat B804', issue: 'Rent receipt not issued', status: '₹42,500 unconfirmed',
+    headline: 'Rent not paid.',
+    subline: 'Landlord asking. Tenant ignoring.',
+    flat: 'Flat B804', issue: 'Rent overdue — 12 days', status: '₹42,500 pending',
     accent: ['#F59E0B','#FEF3C7','#92400E'],
     messages: [
-      { text: 'PAID B804 42500 — GPay screenshot attach kar rahi hoon. Please confirm.', date: 'Day 1 — Mar 3', side: 'left' },
-      { text: 'Ok ok, dekh ke update karta hoon.', date: 'Day 2 — Mar 4', side: 'right' },
-      { text: '9 din ho gaye. Koi receipt nahi, koi confirmation nahi. Yeh documented kahan hai?', date: 'Day 9 — Mar 12', side: 'left' }
+      { sender: 'Landlord', text: 'Sneha ji, March rent abhi tak nahi aaya. Due date 1st thi. Please confirm kab transfer karein ge.', date: 'Day 3 — Mar 3', side: 'right' },
+      { sender: 'Tenant — Sneha', text: 'Haan bhai kar diya hoga, check karo.', date: 'Day 4 — Mar 4', side: 'left' },
+      { sender: 'Landlord', text: 'Bank mein kuch nahi aaya. PropAccord pe bhi koi PAID entry nahi. Screenshot bhejo please.', date: 'Day 12 — Mar 12', side: 'right' }
     ],
     messagesX: [
-      { text: 'PAID B804 42500 — GPay done. Please confirm receipt.', date: 'Day 1 — Mar 3', side: 'left' },
-      { text: '9 din ho gaye. Koi receipt nahi. Yeh documented kahan hai?', date: 'Day 9 — Mar 12', side: 'left' }
+      { sender: 'Landlord', text: 'March rent abhi tak nahi aaya. PropAccord pe koi PAID entry nahi.', date: 'Day 3 — Mar 3', side: 'right' },
+      { sender: 'Tenant — Sneha', text: 'Kar diya hoga, check karo.', date: 'Day 4 — Mar 4', side: 'left' }
     ]
   },
   {
@@ -558,13 +579,13 @@ const PRESETS = [
     flat: 'Villa 3', issue: 'Society water pump failure', status: 'Escalated · Day 5',
     accent: ['#7C3AED','#EDE9FE','#5B21B6'],
     messages: [
-      { text: 'SOCIETY — water pump failure. Poori building affected. Koi action lo please.', date: 'Day 1 — Mar 7', side: 'left' },
-      { text: 'Society committee ko escalate kar diya. Reply ka wait kar rahe hain.', date: 'Day 1 — Mar 7', side: 'right' },
-      { text: '5 din baad bhi koi update nahi. Mujhe PropAccord ka audit log chahiye.', date: 'Day 5 — Mar 12', side: 'left' }
+      { sender: 'Tenant — Arjun', text: 'SOCIETY — water pump failure. Poori building affected. Koi action lo please.', date: 'Day 1 — Mar 7', side: 'left' },
+      { sender: 'RM — PropAccord', text: 'Society committee ko escalate kar diya. Reply ka wait kar rahe hain.', date: 'Day 1 — Mar 7', side: 'right' },
+      { sender: 'Tenant — Arjun', text: '5 din baad bhi koi update nahi. Mujhe PropAccord ka audit log chahiye.', date: 'Day 5 — Mar 12', side: 'left' }
     ],
     messagesX: [
-      { text: 'SOCIETY — water pump failure. Poori building affected. Koi action lo.', date: 'Day 1 — Mar 7', side: 'left' },
-      { text: '5 din baad bhi koi update nahi. PropAccord audit log ready hai.', date: 'Day 5 — Mar 12', side: 'left' }
+      { sender: 'Tenant — Arjun', text: 'SOCIETY — water pump failure. Poori building affected.', date: 'Day 1 — Mar 7', side: 'left' },
+      { sender: 'Tenant — Arjun', text: '5 din baad bhi koi update nahi. PropAccord audit log ready hai.', date: 'Day 5 — Mar 12', side: 'left' }
     ]
   },
   {
@@ -573,13 +594,13 @@ const PRESETS = [
     flat: 'POW_101', issue: 'Internet not working', status: 'Repeated · 3×',
     accent: ['#0EA5E9','#E0F2FE','#0369A1'],
     messages: [
-      { text: 'FIX 101 — internet phir gaya. WFH hai aaj. Yeh 3rd baar hai is mahine.', date: 'Day 1 — Mar 2', side: 'left' },
-      { text: 'ISP ko complaint daal di. Ticket #4421 raise hua hai.', date: 'Day 2 — Mar 3', side: 'right' },
-      { text: 'Bhai har baar naya ticket. Koi permanent fix kab hoga? PropAccord pe log ho raha hai.', date: 'Day 9 — Mar 11', side: 'left' }
+      { sender: 'Tenant — Ritu', text: 'FIX 101 — internet phir gaya. WFH hai aaj. Yeh 3rd baar hai is mahine.', date: 'Day 1 — Mar 2', side: 'left' },
+      { sender: 'RM — PropAccord', text: 'ISP ko complaint daal di. Ticket #4421 raise hua hai.', date: 'Day 2 — Mar 3', side: 'right' },
+      { sender: 'Tenant — Ritu', text: 'Bhai har baar naya ticket. Koi permanent fix kab hoga? PropAccord pe log ho raha hai.', date: 'Day 9 — Mar 11', side: 'left' }
     ],
     messagesX: [
-      { text: 'FIX 101 — internet phir gaya. 3rd baar is mahine. WFH barbad ho gaya.', date: 'Day 1 — Mar 2', side: 'left' },
-      { text: 'Koi permanent fix kab hoga? PropAccord pe logged hai.', date: 'Day 9 — Mar 11', side: 'left' }
+      { sender: 'Tenant — Ritu', text: 'FIX 101 — internet phir gaya. 3rd baar is mahine. WFH barbad.', date: 'Day 1 — Mar 2', side: 'left' },
+      { sender: 'Tenant — Ritu', text: 'Koi permanent fix kab hoga? PropAccord pe logged hai.', date: 'Day 9 — Mar 11', side: 'left' }
     ]
   },
   {
@@ -588,13 +609,13 @@ const PRESETS = [
     flat: 'Flat 303', issue: 'Security deposit not returned', status: 'EXIT pending',
     accent: ['#25D366','#D1FAE5','#065F46'],
     messages: [
-      { text: 'EXIT 303 15th April — PropAccord pe logged hai. ₹85,000 deposit return karna hai.', date: 'Day 1 — Mar 14', side: 'left' },
-      { text: 'Inspection ke baad decide karenge. Abhi kuch nahi bol sakte.', date: 'Day 1 — Mar 14', side: 'right' },
-      { text: 'Yeh sab PropAccord mein timestamp ke saath record hai. Court mein bhi chalega.', date: 'Day 2 — Mar 15', side: 'left' }
+      { sender: 'Tenant — Priya', text: 'EXIT 303 15th April — PropAccord pe logged hai. ₹85,000 deposit return karna hai.', date: 'Day 1 — Mar 14', side: 'left' },
+      { sender: 'Landlord', text: 'Inspection ke baad decide karenge. Abhi kuch nahi bol sakte.', date: 'Day 1 — Mar 14', side: 'right' },
+      { sender: 'Tenant — Priya', text: 'Yeh sab PropAccord mein timestamp ke saath record hai. Court mein bhi chalega.', date: 'Day 2 — Mar 15', side: 'left' }
     ],
     messagesX: [
-      { text: 'EXIT 303 15th April — ₹85,000 deposit return karo. PropAccord pe logged.', date: 'Day 1 — Mar 14', side: 'left' },
-      { text: 'Timestamp ke saath sab record hai. Court mein bhi chalega.', date: 'Day 2 — Mar 15', side: 'left' }
+      { sender: 'Tenant — Priya', text: 'EXIT 303 15th April — ₹85,000 deposit return karo. PropAccord pe logged.', date: 'Day 1 — Mar 14', side: 'left' },
+      { sender: 'Tenant — Priya', text: 'Timestamp ke saath sab record hai. Court mein bhi chalega.', date: 'Day 2 — Mar 15', side: 'left' }
     ]
   }
 ];
@@ -612,12 +633,13 @@ function renderMsgList() {
       <div class="msg-row-head">
         <span class="msg-row-label">Msg ${i+1}</span>
         <div class="msg-side-toggle">
-          <button class="side-btn ${m.side==='left'?'active-left':''}"  onclick="setSide(${i},'left')">← Tenant</button>
-          <button class="side-btn ${m.side==='right'?'active-right':''}" onclick="setSide(${i},'right')">Landlord →</button>
+          <button class="side-btn ${m.side==='left'?'active-left':''}"  onclick="setSide(${i},'left')">← Left</button>
+          <button class="side-btn ${m.side==='right'?'active-right':''}" onclick="setSide(${i},'right')">Right →</button>
         </div>
         <button class="remove-msg-btn" onclick="removeMsg(${i})">✕</button>
       </div>
-      <input value="${escAttr(m.date)}" placeholder="Date e.g. Feb 27" oninput="updateMsg(${i},'date',this.value)">
+      <input value="${escAttr(m.sender||'')}" placeholder="Sender name e.g. Landlord / Tenant / RM" oninput="updateMsg(${i},'sender',this.value)">
+      <input value="${escAttr(m.date)}" placeholder="Date e.g. Day 1 — Mar 3" oninput="updateMsg(${i},'date',this.value)">
       <textarea rows="2" placeholder="Message text" oninput="updateMsg(${i},'text',this.value)">${escHTML(m.text)}</textarea>
     `;
     c.appendChild(d);
@@ -627,7 +649,7 @@ function renderMsgList() {
 function updateMsg(i,key,val){ messages[i][key]=val; renderPost(); }
 function setSide(i,side){ messages[i].side=side; renderMsgList(); renderPost(); }
 function removeMsg(i){ messages.splice(i,1); renderMsgList(); renderPost(); }
-function addMessage(){ messages.push({text:'',date:'',side:'left'}); renderMsgList(); renderPost(); }
+function addMessage(){ messages.push({sender:'',text:'',date:'',side:'left'}); renderMsgList(); renderPost(); }
 
 function renderPost() {
   document.getElementById('el-headline').innerText = document.getElementById('inp-headline').value;
@@ -640,17 +662,30 @@ function renderPost() {
   thread.innerHTML = '';
   const src = (currentPlatform === 'x' && currentMessagesX.length) ? currentMessagesX : messages;
   src.forEach(m => {
-    if (m.date) {
-      const d = document.createElement('div');
-      d.className = 'thread-date';
-      d.innerText = m.date;
-      thread.appendChild(d);
-    }
     const row = document.createElement('div');
     row.className = `bubble-row ${m.side}`;
     const b = document.createElement('div');
     b.className = 'bubble';
-    b.innerText = m.text;
+    if (m.sender || m.date) {
+      const sr = document.createElement('div');
+      sr.className = 'bubble-sender-row';
+      if (m.sender) {
+        const s = document.createElement('div');
+        s.className = 'bubble-sender';
+        s.innerText = m.sender;
+        sr.appendChild(s);
+      }
+      if (m.date) {
+        const d = document.createElement('div');
+        d.className = 'bubble-date';
+        d.innerText = m.date;
+        sr.appendChild(d);
+      }
+      b.appendChild(sr);
+    }
+    const t = document.createElement('div');
+    t.innerText = m.text;
+    b.appendChild(t);
     row.appendChild(b);
     thread.appendChild(row);
   });
