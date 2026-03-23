@@ -699,7 +699,7 @@ const PRESETS = [
     accent: ['#7C3AED','#EDE9FE','#5B21B6'],
     messages: [
       { sender: 'Tenant — Arjun', text: 'SOCIETY — water pump failure. Poori building affected. Koi action lo please.', date: 'Day 1 — Mar 7', side: 'left' },
-      { sender: 'RM — PropAccord', text: 'Society committee ko escalate kar diya. Reply ka wait kar rahe hain.', date: 'Day 1 — Mar 7', side: 'right' },
+      { sender: 'Relationship Manager — PropAccord', text: 'Society committee ko escalate kar diya. Reply ka wait kar rahe hain.', date: 'Day 1 — Mar 7', side: 'right' },
       { sender: 'Tenant — Arjun', text: '5 din baad bhi koi update nahi. Mujhe PropAccord ka audit log chahiye.', date: 'Day 5 — Mar 12', side: 'left' }
     ],
     messagesX: [
@@ -714,7 +714,7 @@ const PRESETS = [
     accent: ['#0EA5E9','#E0F2FE','#0369A1'],
     messages: [
       { sender: 'Tenant — Ritu', text: 'FIX 101 — internet phir gaya. WFH hai aaj. Yeh 3rd baar hai is mahine.', date: 'Day 1 — Mar 2', side: 'left' },
-      { sender: 'RM — PropAccord', text: 'ISP ko complaint daal di. Ticket #4421 raise hua hai.', date: 'Day 2 — Mar 3', side: 'right' },
+      { sender: 'Relationship Manager — PropAccord', text: 'ISP ko complaint daal di. Ticket #4421 raise hua hai.', date: 'Day 2 — Mar 3', side: 'right' },
       { sender: 'Tenant — Ritu', text: 'Bhai har baar naya ticket. Koi permanent fix kab hoga? PropAccord pe log ho raha hai.', date: 'Day 9 — Mar 11', side: 'left' }
     ],
     messagesX: [
@@ -757,7 +757,7 @@ function renderMsgList() {
         </div>
         <button class="remove-msg-btn" onclick="removeMsg(${i})">✕</button>
       </div>
-      <input value="${escAttr(m.sender||'')}" placeholder="Sender name e.g. Landlord / Tenant / RM" oninput="updateMsg(${i},'sender',this.value)">
+      <input value="${escAttr(m.sender||'')}" placeholder="Sender name e.g. Landlord / Tenant / Relationship Manager" oninput="updateMsg(${i},'sender',this.value)">
       <input value="${escAttr(m.date)}" placeholder="Date e.g. Day 1 — Mar 3" oninput="updateMsg(${i},'date',this.value)">
       <textarea rows="2" placeholder="Message text" oninput="updateMsg(${i},'text',this.value)">${escHTML(m.text)}</textarea>
     `;
