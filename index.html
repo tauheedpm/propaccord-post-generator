@@ -700,6 +700,10 @@ const PRESETS = [
     subline: 'Tenant reported it 11 days ago.',
     flat: 'Flat 402', issue: 'Geyser not working', status: '11 days open',
     accent: ['#E84D4D','#FEE2E2','#B91C1C'],
+    xEsc: [{label:'Reported',day:'Day 1'},{label:'Ignored',day:'Day 2'},{label:'Still broken',day:'Day 11'}],
+    xSeparator: 'Reported. Promised. Forgotten.',
+    xPunch1: 'PropAccord logs every FIX request.',
+    xPunch2: 'Open tickets don\'t disappear.',
     messages: [
       { sender: 'Tenant — Rahul', text: 'Bhai geyser 3 din se band hai. Thanda paani aa raha hai. Please fix karo ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
       { sender: 'Landlord', text: 'Haan dekh lenge, plumber ko bol diya.', date: 'Day 2 — Feb 28', side: 'right' },
@@ -715,6 +719,10 @@ const PRESETS = [
     subline: 'Landlord asking. Tenant ignoring.',
     flat: 'Flat B804', issue: '₹42,500 — No response', status: 'IGNORED · 12 DAYS',
     accent: ['#F59E0B','#FEE2E2','#B91C1C'],
+    xEsc: [{label:'Asked',day:'Day 3'},{label:'Ignored',day:'Day 4'},{label:'Unresolved',day:'Day 12'}],
+    xSeparator: 'No payment. No proof. No reply.',
+    xPunch1: 'PropAccord logs every PAID entry.',
+    xPunch2: 'If it\'s not there — it didn\'t happen.',
     messages: [
       { sender: 'Landlord', text: 'Sneha ji, March rent abhi tak nahi aaya. Due date 1st thi. Please confirm kab transfer karein ge.', date: 'Day 3 — Mar 3', side: 'left' },
       { sender: 'Tenant — Sneha', text: 'Haan bhai kar diya hoga, check karo.', date: 'Day 4 — Mar 4', side: 'right' },
@@ -730,6 +738,10 @@ const PRESETS = [
     subline: 'Escalated twice. Still waiting.',
     flat: 'Villa 3', issue: 'Society water pump failure', status: 'Escalated · Day 5',
     accent: ['#7C3AED','#EDE9FE','#5B21B6'],
+    xEsc: [{label:'Reported',day:'Day 1'},{label:'Escalated',day:'Day 1'},{label:'No response',day:'Day 5'}],
+    xSeparator: 'Escalated. Acknowledged. Forgotten.',
+    xPunch1: 'PropAccord creates a timestamped audit trail.',
+    xPunch2: 'Silence is no longer an option.',
     messages: [
       { sender: 'Tenant — Arjun', text: 'SOCIETY — water pump failure. Poori building affected. Koi action lo please.', date: 'Day 1 — Mar 7', side: 'left' },
       { sender: 'Relationship Manager — PropAccord', text: 'Society committee ko escalate kar diya. Reply ka wait kar rahe hain.', date: 'Day 1 — Mar 7', side: 'right' },
@@ -745,6 +757,10 @@ const PRESETS = [
     subline: 'Same issue. Same flat. Zero fix.',
     flat: 'POW_101', issue: 'Internet not working', status: 'Repeated · 3×',
     accent: ['#0EA5E9','#E0F2FE','#0369A1'],
+    xEsc: [{label:'Raised',day:'Day 1'},{label:'Ticket filed',day:'Day 2'},{label:'Still down',day:'Day 9'}],
+    xSeparator: 'Ticket raised. Closed. Problem stays.',
+    xPunch1: 'PropAccord tracks repeat issues by flat.',
+    xPunch2: 'Patterns don\'t hide when everything is logged.',
     messages: [
       { sender: 'Tenant — Ritu', text: 'FIX 101 — internet phir gaya. WFH hai aaj. Yeh 3rd baar hai is mahine.', date: 'Day 1 — Mar 2', side: 'left' },
       { sender: 'Relationship Manager — PropAccord', text: 'ISP ko complaint daal di. Ticket #4421 raise hua hai.', date: 'Day 2 — Mar 3', side: 'right' },
@@ -760,6 +776,10 @@ const PRESETS = [
     subline: 'Exit initiated. No settlement.',
     flat: 'Flat 303', issue: 'Security deposit not returned', status: 'EXIT pending',
     accent: ['#25D366','#D1FAE5','#065F46'],
+    xEsc: [{label:'EXIT filed',day:'Day 1'},{label:'No timeline',day:'Day 1'},{label:'Still pending',day:'Day 2'}],
+    xSeparator: 'Exit filed. Deposit held. No answer.',
+    xPunch1: 'PropAccord logs every EXIT with a timestamp.',
+    xPunch2: 'The paper trail exists before the dispute starts.',
     messages: [
       { sender: 'Tenant — Priya', text: 'EXIT 303 15th April — PropAccord pe logged hai. ₹85,000 deposit return karna hai.', date: 'Day 1 — Mar 14', side: 'left' },
       { sender: 'Landlord', text: 'Inspection ke baad decide karenge. Abhi kuch nahi bol sakte.', date: 'Day 1 — Mar 14', side: 'right' },
@@ -895,18 +915,21 @@ function renderPost() {
   if (currentPlatform === 'x') {
     const sep = document.createElement('div');
     sep.className = 'x-separator';
+    const sepText = document.getElementById('inp-separator').value;
     sep.innerHTML = `
       <div class="x-separator-line"></div>
-      <div class="x-separator-text">No payment. No proof. No reply.</div>
+      <div class="x-separator-text">${sepText}</div>
       <div class="x-separator-line"></div>
     `;
     thread.appendChild(sep);
 
     const punch = document.createElement('div');
     punch.className = 'x-punchline';
+    const p1 = document.getElementById('inp-punch1').value;
+    const p2 = document.getElementById('inp-punch2').value;
     punch.innerHTML = `
-      <div class="x-punchline-line1">PropAccord logs every PAID entry.</div>
-      <div class="x-punchline-line2">If it's not there — it didn't happen.</div>
+      <div class="x-punchline-line1">${p1}</div>
+      <div class="x-punchline-line2">${p2}</div>
     `;
     thread.appendChild(punch);
   }
@@ -929,6 +952,20 @@ function loadPreset(idx) {
   document.getElementById('inp-issue').value    = p.issue;
   document.getElementById('inp-status').value   = p.status;
   messages = p.messages.map(m=>({...m}));
+  currentMessagesX = (p.messagesX || []).map(m=>({...m}));
+
+  // Populate X fields if present in preset
+  if (p.xEsc) {
+    document.getElementById('inp-esc1-label').value = p.xEsc[0].label;
+    document.getElementById('inp-esc1-day').value   = p.xEsc[0].day;
+    document.getElementById('inp-esc2-label').value = p.xEsc[1].label;
+    document.getElementById('inp-esc2-day').value   = p.xEsc[1].day;
+    document.getElementById('inp-esc3-label').value = p.xEsc[2].label;
+    document.getElementById('inp-esc3-day').value   = p.xEsc[2].day;
+  }
+  if (p.xSeparator) document.getElementById('inp-separator').value = p.xSeparator;
+  if (p.xPunch1)    document.getElementById('inp-punch1').value    = p.xPunch1;
+  if (p.xPunch2)    document.getElementById('inp-punch2').value    = p.xPunch2;
 
   const swatches = document.querySelectorAll('.color-swatch');
   const colors   = ['#E84D4D','#F59E0B','#7C3AED','#0EA5E9','#25D366'];
