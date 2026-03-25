@@ -885,10 +885,10 @@ function renderPost() {
     }
   }
 
-  // Build thread
+  // Build thread - always use messages so sidebar edits reflect live
   const thread = document.getElementById('el-thread');
   thread.innerHTML = '';
-  const src = (currentPlatform === 'x' && currentMessagesX && currentMessagesX.length) ? currentMessagesX : messages;
+  const src = messages;
   src.forEach((m, idx) => {
     const row = document.createElement('div');
     row.className = `bubble-row ${m.side}`;
