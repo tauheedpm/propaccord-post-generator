@@ -644,7 +644,6 @@ function setPlatform(p) {
 
   if (p === 'x') {
     post.classList.add('x-format');
-    // build two-column layout if not already done
     if (!post.querySelector('.x-left')) {
       const brand    = post.querySelector('.post-brand');
       const headline = post.querySelector('.post-headline');
@@ -652,39 +651,42 @@ function setPlatform(p) {
       const thread   = post.querySelector('.post-thread');
       const issue    = post.querySelector('.post-issue');
 
-      const left = document.createElement('div');
-      left.className = 'x-left';
-      left.appendChild(brand);
-      left.appendChild(headline);
-      left.appendChild(subline);
-      left.appendChild(issue);
+      if (brand && headline && subline && thread && issue) {
+        const left = document.createElement('div');
+        left.className = 'x-left';
+        left.appendChild(brand);
+        left.appendChild(headline);
+        left.appendChild(subline);
+        left.appendChild(issue);
 
-      const right = document.createElement('div');
-      right.className = 'x-right';
-      right.appendChild(thread);
+        const right = document.createElement('div');
+        right.className = 'x-right';
+        right.appendChild(thread);
 
-      post.innerHTML = '';
-      post.appendChild(left);
-      post.appendChild(right);
+        post.innerHTML = '';
+        post.appendChild(left);
+        post.appendChild(right);
+      }
     }
   } else {
     post.classList.remove('x-format');
-    // restore flat layout if columns exist
-    if (post.querySelector('.x-left')) {
-      const left   = post.querySelector('.x-left');
-      const right  = post.querySelector('.x-right');
-      const brand    = left.querySelector('.post-brand');
-      const headline = left.querySelector('.post-headline');
-      const subline  = left.querySelector('.post-subline');
-      const issue    = left.querySelector('.post-issue');
-      const thread   = right.querySelector('.post-thread');
+    const xLeft  = post.querySelector('.x-left');
+    const xRight = post.querySelector('.x-right');
+    if (xLeft && xRight) {
+      const brand    = xLeft.querySelector('.post-brand');
+      const headline = xLeft.querySelector('.post-headline');
+      const subline  = xLeft.querySelector('.post-subline');
+      const issue    = xLeft.querySelector('.post-issue');
+      const thread   = xRight.querySelector('.post-thread');
 
-      post.innerHTML = '';
-      post.appendChild(brand);
-      post.appendChild(headline);
-      post.appendChild(subline);
-      post.appendChild(thread);
-      post.appendChild(issue);
+      if (brand && headline && subline && issue && thread) {
+        post.innerHTML = '';
+        post.appendChild(brand);
+        post.appendChild(headline);
+        post.appendChild(subline);
+        post.appendChild(thread);
+        post.appendChild(issue);
+      }
     }
   }
 
@@ -710,8 +712,9 @@ const PRESETS = [
       { sender: 'Tenant — Rahul', text: 'Abhi tak koi nahi aaya. 11 din ho gaye. Log chai bhi nahi bana pa rahe.', date: 'Day 11 — Mar 9', side: 'left' }
     ],
     messagesX: [
-      { sender: 'Tenant — Rahul', text: 'Bhai geyser 3 din se band hai. Please fix karo ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
-      { sender: 'Tenant — Rahul', text: 'Abhi tak koi nahi aaya. 11 din ho gaye.', date: 'Day 11 — Mar 9', side: 'left' }
+      { sender: 'Tenant — Rahul', text: 'Geyser broken for 3 days. No hot water. Please fix ASAP.', date: 'Day 1 — Feb 27', side: 'left' },
+      { sender: 'Landlord', text: 'Will look into it. Have asked the plumber.', date: 'Day 2 — Feb 28', side: 'right' },
+      { sender: 'Tenant — Rahul', text: '11 days. Nobody came. Still waiting.', date: 'Day 11 — Mar 9', side: 'left' }
     ]
   },
   {
@@ -729,8 +732,9 @@ const PRESETS = [
       { sender: 'Landlord', text: 'Bank mein kuch nahi aaya. PropAccord pe bhi koi PAID entry nahi. Screenshot bhejo please.', date: 'Day 12 — Mar 12', side: 'left' }
     ],
     messagesX: [
-      { sender: 'Landlord', text: 'March rent abhi tak nahi aaya. PropAccord pe koi PAID entry nahi.', date: 'Day 3 — Mar 3', side: 'left' },
-      { sender: 'Tenant — Sneha', text: 'Kar diya hoga, check karo.', date: 'Day 4 — Mar 4', side: 'right' }
+      { sender: 'Landlord', text: 'March rent still due. Due date was the 1st. Please confirm when you will transfer.', date: 'Day 3 — Mar 3', side: 'left' },
+      { sender: 'Tenant — Sneha', text: 'I think I already paid. Please check.', date: 'Day 4 — Mar 4', side: 'right' },
+      { sender: 'Landlord', text: 'Nothing in the bank. No PAID entry on PropAccord. Please send screenshot.', date: 'Day 12 — Mar 12', side: 'left' }
     ]
   },
   {
@@ -748,8 +752,9 @@ const PRESETS = [
       { sender: 'Tenant — Arjun', text: '5 din baad bhi koi update nahi. Mujhe PropAccord ka audit log chahiye.', date: 'Day 5 — Mar 12', side: 'left' }
     ],
     messagesX: [
-      { sender: 'Tenant — Arjun', text: 'SOCIETY — water pump failure. Poori building affected.', date: 'Day 1 — Mar 7', side: 'left' },
-      { sender: 'Tenant — Arjun', text: '5 din baad bhi koi update nahi. PropAccord audit log ready hai.', date: 'Day 5 — Mar 12', side: 'left' }
+      { sender: 'Tenant — Arjun', text: 'Water pump failure. Entire building affected. Need immediate action.', date: 'Day 1 — Mar 7', side: 'left' },
+      { sender: 'Relationship Manager — PropAccord', text: 'Escalated to society committee. Waiting for response.', date: 'Day 1 — Mar 7', side: 'right' },
+      { sender: 'Tenant — Arjun', text: '5 days. No update. PropAccord audit log is ready.', date: 'Day 5 — Mar 12', side: 'left' }
     ]
   },
   {
@@ -767,8 +772,9 @@ const PRESETS = [
       { sender: 'Tenant — Ritu', text: 'Bhai har baar naya ticket. Koi permanent fix kab hoga? PropAccord pe log ho raha hai.', date: 'Day 9 — Mar 11', side: 'left' }
     ],
     messagesX: [
-      { sender: 'Tenant — Ritu', text: 'FIX 101 — internet phir gaya. 3rd baar is mahine. WFH barbad.', date: 'Day 1 — Mar 2', side: 'left' },
-      { sender: 'Tenant — Ritu', text: 'Koi permanent fix kab hoga? PropAccord pe logged hai.', date: 'Day 9 — Mar 11', side: 'left' }
+      { sender: 'Tenant — Ritu', text: 'Internet down again. 3rd time this month. WFH completely disrupted.', date: 'Day 1 — Mar 2', side: 'left' },
+      { sender: 'Relationship Manager — PropAccord', text: 'Complaint filed with ISP. Ticket #4421 raised.', date: 'Day 2 — Mar 3', side: 'right' },
+      { sender: 'Tenant — Ritu', text: 'New ticket every time solves nothing. When is there a permanent fix?', date: 'Day 9 — Mar 11', side: 'left' }
     ]
   },
   {
@@ -787,7 +793,8 @@ const PRESETS = [
     ],
     messagesX: [
       { sender: 'Tenant — Priya', text: 'EXIT 303 15th April — ₹85,000 deposit return karo. PropAccord pe logged.', date: 'Day 1 — Mar 14', side: 'left' },
-      { sender: 'Tenant — Priya', text: 'Timestamp ke saath sab record hai. Court mein bhi chalega.', date: 'Day 2 — Mar 15', side: 'left' }
+      { sender: 'Landlord', text: 'Will decide after inspection. Cannot say anything right now.', date: 'Day 1 — Mar 14', side: 'right' },
+      { sender: 'Tenant — Priya', text: 'Everything is timestamped on PropAccord. This will hold up in court.', date: 'Day 2 — Mar 15', side: 'left' }
     ]
   }
 ];
@@ -881,7 +888,7 @@ function renderPost() {
   // Build thread
   const thread = document.getElementById('el-thread');
   thread.innerHTML = '';
-  const src = (currentPlatform === 'x' && currentMessagesX.length) ? currentMessagesX : messages;
+  const src = (currentPlatform === 'x' && currentMessagesX && currentMessagesX.length) ? currentMessagesX : messages;
   src.forEach((m, idx) => {
     const row = document.createElement('div');
     row.className = `bubble-row ${m.side}`;
