@@ -547,8 +547,40 @@ aside {
 
     <div class="divider"></div>
 
-    <div>
-      <div class="sec-label">Accent Color</div>
+    <div id="x-only-section" style="display:none;">
+      <div class="sec-label">X — Escalation Bar</div>
+      <div style="display:flex;flex-direction:column;gap:8px;">
+        <div style="display:flex;gap:6px;">
+          <div class="field" style="flex:1"><label>Label 1</label><input id="inp-esc1-label" value="Asked" oninput="renderPost()"></div>
+          <div class="field" style="width:52px"><label>Day</label><input id="inp-esc1-day" value="Day 3" oninput="renderPost()"></div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <div class="field" style="flex:1"><label>Label 2</label><input id="inp-esc2-label" value="Ignored" oninput="renderPost()"></div>
+          <div class="field" style="width:52px"><label>Day</label><input id="inp-esc2-day" value="Day 4" oninput="renderPost()"></div>
+        </div>
+        <div style="display:flex;gap:6px;">
+          <div class="field" style="flex:1"><label>Label 3</label><input id="inp-esc3-label" value="Unresolved" oninput="renderPost()"></div>
+          <div class="field" style="width:52px"><label>Day</label><input id="inp-esc3-day" value="Day 12" oninput="renderPost()"></div>
+        </div>
+      </div>
+
+      <div class="divider" style="margin:12px 0;"></div>
+
+      <div class="sec-label">X — Separator Text</div>
+      <div class="field">
+        <input id="inp-separator" value="No payment. No proof. No reply." oninput="renderPost()">
+      </div>
+
+      <div style="margin-top:10px;">
+      <div class="sec-label">X — Punchline</div>
+      <div style="display:flex;flex-direction:column;gap:6px;">
+        <div class="field"><label>Line 1</label><input id="inp-punch1" value="PropAccord logs every PAID entry." oninput="renderPost()"></div>
+        <div class="field"><label>Line 2</label><input id="inp-punch2" value="If it's not there — it didn't happen." oninput="renderPost()"></div>
+      </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
       <div class="color-row" id="colorRow">
         <div class="color-swatch selected" style="background:#E84D4D" onclick="setAccent(this,'#E84D4D','#FEE2E2','#B91C1C')"></div>
         <div class="color-swatch" style="background:#F59E0B" onclick="setAccent(this,'#F59E0B','#FEF3C7','#92400E')"></div>
@@ -658,6 +690,7 @@ function setPlatform(p) {
 
   document.getElementById('btn-instagram').classList.toggle('active', p === 'instagram');
   document.getElementById('btn-x').classList.toggle('active', p === 'x');
+  document.getElementById('x-only-section').style.display = p === 'x' ? 'block' : 'none';
   renderPost();
 }
 
@@ -790,6 +823,13 @@ function renderPost() {
     const left = document.querySelector('.x-left');
     const subline = document.getElementById('el-subline');
     if (left && subline) {
+      const e1l = document.getElementById('inp-esc1-label').value;
+      const e1d = document.getElementById('inp-esc1-day').value;
+      const e2l = document.getElementById('inp-esc2-label').value;
+      const e2d = document.getElementById('inp-esc2-day').value;
+      const e3l = document.getElementById('inp-esc3-label').value;
+      const e3d = document.getElementById('inp-esc3-day').value;
+
       const bar = document.createElement('div');
       bar.id = 'x-esc-bar';
       bar.className = 'x-escalation';
@@ -797,20 +837,20 @@ function renderPost() {
         <div class="x-esc-row" style="width:100%;align-items:flex-start;gap:0;">
           <div class="x-esc-step">
             <div class="x-esc-dot" style="background:#F59E0B"></div>
-            <div class="x-esc-label" style="color:#F59E0B">Asked</div>
-            <div class="x-esc-day">Day 3</div>
+            <div class="x-esc-label" style="color:#F59E0B">${e1l}</div>
+            <div class="x-esc-day">${e1d}</div>
           </div>
           <div style="flex:1;height:2px;background:linear-gradient(to right,#F59E0B,#E84D4D);margin-top:3px;"></div>
           <div class="x-esc-step">
             <div class="x-esc-dot" style="background:#E08030"></div>
-            <div class="x-esc-label" style="color:#E08030">Ignored</div>
-            <div class="x-esc-day">Day 4</div>
+            <div class="x-esc-label" style="color:#E08030">${e2l}</div>
+            <div class="x-esc-day">${e2d}</div>
           </div>
           <div style="flex:1;height:2px;background:linear-gradient(to right,#E08030,#E84D4D);margin-top:3px;"></div>
           <div class="x-esc-step">
             <div class="x-esc-dot" style="background:#E84D4D"></div>
-            <div class="x-esc-label" style="color:#E84D4D">Unresolved</div>
-            <div class="x-esc-day">Day 12</div>
+            <div class="x-esc-label" style="color:#E84D4D">${e3l}</div>
+            <div class="x-esc-day">${e3d}</div>
           </div>
         </div>
       `;
